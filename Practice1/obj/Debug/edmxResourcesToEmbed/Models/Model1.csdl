@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NagimovFabrikaMebeliModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="NagimovFabrikaMebeliEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Mebel" EntityType="NagimovFabrikaMebeliModel.Mebel" />
+    <EntitySet Name="MebelType" EntityType="NagimovFabrikaMebeliModel.MebelType" />
+    <EntitySet Name="Role" EntityType="NagimovFabrikaMebeliModel.Role" />
+    <EntitySet Name="sysdiagrams" EntityType="NagimovFabrikaMebeliModel.sysdiagrams" />
+    <EntitySet Name="Users" EntityType="NagimovFabrikaMebeliModel.Users" />
+    <AssociationSet Name="FK_Mebel_MebelType" Association="NagimovFabrikaMebeliModel.FK_Mebel_MebelType">
+      <End Role="MebelType" EntitySet="MebelType" />
+      <End Role="Mebel" EntitySet="Mebel" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Role" Association="NagimovFabrikaMebeliModel.FK_Users_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Mebel">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Material" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Int32" />
+    <Property Name="Style" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Amount" Type="Int32" />
+    <NavigationProperty Name="MebelType" Relationship="NagimovFabrikaMebeliModel.FK_Mebel_MebelType" FromRole="Mebel" ToRole="MebelType" />
+  </EntityType>
+  <EntityType Name="MebelType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Mebel" Relationship="NagimovFabrikaMebeliModel.FK_Mebel_MebelType" FromRole="MebelType" ToRole="Mebel" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Users" Relationship="NagimovFabrikaMebeliModel.FK_Users_Role" FromRole="Role" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RoleId" Type="Int32" />
+    <NavigationProperty Name="Role" Relationship="NagimovFabrikaMebeliModel.FK_Users_Role" FromRole="Users" ToRole="Role" />
+  </EntityType>
+  <Association Name="FK_Mebel_MebelType">
+    <End Type="NagimovFabrikaMebeliModel.MebelType" Role="MebelType" Multiplicity="0..1" />
+    <End Type="NagimovFabrikaMebeliModel.Mebel" Role="Mebel" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MebelType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Mebel">
+        <PropertyRef Name="TypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Role">
+    <End Type="NagimovFabrikaMebeliModel.Role" Role="Role" Multiplicity="0..1" />
+    <End Type="NagimovFabrikaMebeliModel.Users" Role="Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
